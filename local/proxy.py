@@ -1358,7 +1358,16 @@ class Common(object):
         self.URLREWRITE_MAP = urlrewrite_map
         self.RULE_MAP = rule_map
 
-        self.IPLIST_ALIAS = collections.OrderedDict((k, v.split('|') if v else []) for k, v in self.CONFIG.items('iplist'))
+        
+        iplist_file=open(os.path.splitext(os.path.abspath(__file__))[0]+'.iplist')
+        
+        iplist=iplist_file.readline();
+        
+        #self.IPLIST_ALIAS = collections.OrderedDict((k, v.split('|') if v else []) for k, v in self.CONFIG.items('iplist'))
+        self.IPLIST_ALIAS = collections.OrderedDict()
+        self.IPLIST_ALIAS["google_cn"]=iplist.split('|')
+        self.IPLIST_ALIAS["google_hk"]=iplist.split('|')
+        self.IPLIST_ALIAS["google_talk"]=iplist.split('|') 
         self.IPLIST_PREDEFINED = [x for x in sum(self.IPLIST_ALIAS.values(), []) if re.match(r'^\d+\.\d+\.\d+\.\d+$', x) or ':' in x]
 
         if self.GAE_IPV6 and 'google_ipv6' in self.IPLIST_ALIAS:
