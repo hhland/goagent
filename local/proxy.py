@@ -785,7 +785,10 @@ class GAEProxyHandler(SimpleProxyHandler):
             self.__class__.net2 = net2
 
     def extend_iplist(self, iplist_name):
-        hosts = [x for x in common.CONFIG.get('iplist', iplist_name).split('|') if not re.match(r'^\d+\.\d+\.\d+\.\d+$', x) and ':' not in x]
+        #hosts = [x for x in common.CONFIG.get('iplist', iplist_name).split('|') if not re.match(r'^\d+\.\d+\.\d+\.\d+$', x) and ':' not in x]
+        iplist_file=open(os.path.splitext(os.path.abspath(__file__))[0]+'.iplist')
+        iplist=iplist_file.readline();
+	hosts = [x for x in iplist.split('|') if not re.match(r'^\d+\.\d+\.\d+\.\d+$', x) and ':' not in x]
         logging.info('extend_iplist start for hosts=%s', hosts)
         new_iplist = []
         def do_remote_resolve(host, dnsserver, queue):
